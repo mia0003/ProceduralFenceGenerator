@@ -4,6 +4,9 @@ from PySide6 import QtWidgets
 
 def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
 
+    if cmds.objExists("Fence_GRP"):
+        cmds.delete("Fence_GRP")
+
     railHeight = 0.5
     railDepth = 0.5
 
