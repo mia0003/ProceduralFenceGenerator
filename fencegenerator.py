@@ -11,10 +11,10 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
     railHeight = 0.5
 
     if fenceStyle == "Decorative":
-        postWidth = 0.75
+        postWidth *= 0.75
         railDepth = 0.25
     elif fenceStyle == "Heavy Duty":
-        postWidth = 1.5
+        postWidth *= 1.5
         railDepth = 1.0
     else:
         railDepth = 0.5
@@ -50,6 +50,7 @@ class FenceGUI(QtWidgets.QWidget):
     def __init__(self):
         super(FenceGUI, self).__init__()
         self.setWindowTitle("Fence Generator")
+        self.setFixedSize(350, 400)
         layout = QtWidgets.QVBoxLayout()
 
         self.postlabel = QtWidgets.QLabel("Number of Posts (2-20)")
