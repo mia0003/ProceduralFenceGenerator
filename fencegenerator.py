@@ -7,6 +7,8 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
     railHeight = 0.5
     railDepth = 0.5
 
+    fenceParts = []
+
     railLength = (numPosts - 1) * postSpacing
 
     railStartHeight = postHeight * 0.2
@@ -18,13 +20,16 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
         railSpacing = 0
 
     for i in range(numPosts):
-        cmds.polyCube(w=postWidth, h=postHeight, d=postWidth, name="FencePost"
-                      + str(i))
+        post = cmds.polyCube(w=postWidth, h=postHeight, d=postWidth,
+                             name="FencePost" + str(i))[0]
+        fenceParts.append(post)
         cmds.move(i * postSpacing, postHeight / 2, 0)
     for i in range(railCount):
-        cmds.polyCube(w=railLength, h=railHeight, d=railDepth, name="Rail" +
-                      str(i))
+        rail = cmds.polyCube(w=railLength, h=railHeight, d=railDepth,
+                             name="Rail" + str(i))[0]
         cmds.move(railLength / 2, railStartHeight + (i * railSpacing), 0)
+        fenceParts.append(rail)
+    cmds.group(fenceParts, name="Fence_GRP")
 
 
 class FenceGUI(QtWidgets.QWidget):
