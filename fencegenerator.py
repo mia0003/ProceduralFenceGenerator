@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+from PySide6 import QtWidgets
 
 
 def createFence():
@@ -25,4 +26,16 @@ def createFence():
         cmds.move(railLength / 2, railStartHeight + (i * railSpacing), 0)
 
 
-createFence()
+class FenceGUI(QtWidgets.QWidget):
+    def __init__(self):
+        super(FenceGUI, self).__init__()
+        self.setWindowTitle("Fence Generator")
+        layout = QtWidgets.QVBoxLayout()
+        self.generatebutton = QtWidgets.QPushButton("Generate Fence")
+        layout.addWidget(self.generatebutton)
+        self.setLayout(layout)
+        self.generatebutton.clicked.connect(createFence)
+
+
+win = FenceGUI()
+win.show()
