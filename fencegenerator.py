@@ -2,9 +2,27 @@ import maya.cmds as cmds
 from PySide6 import QtWidgets
 
 
+def createPosts(numPosts, postWidth, postHeight, postSpacing, fenceParts):
+    for i in range(numPosts):
+        post = cmds.polyCube(w=postWidth, h=postHeight, d=postWidth,
+                             name="FencePost" + str(i))[0]
+        cmds.polyBevel(post, offset=0.15)
+        cmds.move(i * postSpacing, postHeight / 2, 0)
+        fenceParts.append(post)
+
+
+def createRails(railCount, railLength, railHeight, railDepth, railStartHeight,
+                railSpacing, fenceParts):
+    for i in range(railCount):
+        rail = cmds.polyCube(w=railLength, h=railHeight, d=railDepth,
+                             name="Rail" + str(i))[0]
+        cmds.polyBevel(rail, offset=0.1)
+        cmds.move(railLength / 2, railStartHeight + (i * railSpacing), 0)
+        fenceParts.append(rail)
+
+
 def createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
                 fenceStyle):
-
     if cmds.objExists("Fence_GRP"):
         cmds.delete("Fence_GRP")
 
@@ -31,18 +49,10 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
     else:
         railSpacing = 0
 
-    for i in range(numPosts):
-        post = cmds.polyCube(w=postWidth, h=postHeight, d=postWidth,
-                             name="FencePost" + str(i))[0]
-        cmds.polyBevel(post, offset=0.15)
-        fenceParts.append(post)
-        cmds.move(i * postSpacing, postHeight / 2, 0)
-    for i in range(railCount):
-        rail = cmds.polyCube(w=railLength, h=railHeight, d=railDepth,
-                             name="Rail" + str(i))[0]
-        cmds.polyBevel(rail, offset=0.1)
-        cmds.move(railLength / 2, railStartHeight + (i * railSpacing), 0)
-        fenceParts.append(rail)
+    createPosts(numPosts, postWidth, postHeight, postSpacing, fenceParts)
+    createRails(railCount, railLength, railHeight, railDepth, railStartHeight,
+                railSpacing, fenceParts)
+
     cmds.group(fenceParts, name="Fence_GRP")
 
 
@@ -51,9 +61,13 @@ class FenceGUI(QtWidgets.QWidget):
         super(FenceGUI, self).__init__()
         self.setWindowTitle("Fence Generator")
         self.setFixedSize(350, 400)
+
+        self.createWidgets()
+
+    def createWidgets(self):
         layout = QtWidgets.QVBoxLayout()
 
-        self.postlabel = QtWidgets.QLabel("Number of Posts (2-20)")
+        self.postLabel = QtWidgets.QLabel("Number of Posts (2-20)")
         self.postSpinBox = QtWidgets.QSpinBox()
         self.postSpinBox.setMinimum(2)
         self.postSpinBox.setMaximum(20)
@@ -92,7 +106,7 @@ class FenceGUI(QtWidgets.QWidget):
 
         self.generatebutton = QtWidgets.QPushButton("Generate Fence")
 
-        layout.addWidget(self.postlabel)
+        layout.addWidget(self.postLabel)
         layout.addWidget(self.postSpinBox)
 
         layout.addWidget(self.railLabel)
