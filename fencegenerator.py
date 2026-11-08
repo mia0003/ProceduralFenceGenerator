@@ -34,11 +34,13 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
     for i in range(numPosts):
         post = cmds.polyCube(w=postWidth, h=postHeight, d=postWidth,
                              name="FencePost" + str(i))[0]
+        cmds.polyBevel(post, offset=0.15)
         fenceParts.append(post)
         cmds.move(i * postSpacing, postHeight / 2, 0)
     for i in range(railCount):
         rail = cmds.polyCube(w=railLength, h=railHeight, d=railDepth,
                              name="Rail" + str(i))[0]
+        cmds.polyBevel(rail, offset=0.15)
         cmds.move(railLength / 2, railStartHeight + (i * railSpacing), 0)
         fenceParts.append(rail)
     cmds.group(fenceParts, name="Fence_GRP")
