@@ -2,13 +2,22 @@ import maya.cmds as cmds
 from PySide6 import QtWidgets
 
 
-def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
+def createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
+                fenceStyle):
 
     if cmds.objExists("Fence_GRP"):
         cmds.delete("Fence_GRP")
 
     railHeight = 0.5
-    railDepth = 0.5
+
+    if fenceStyle == "Decorative":
+        postWidth = 0.75
+        railDepth = 0.25
+    elif fenceStyle == "Heavy Duty":
+        postWidth = 1.5
+        railDepth = 1.0
+    else:
+        railDepth = 0.5
 
     fenceParts = []
 
@@ -53,6 +62,13 @@ class FenceGUI(QtWidgets.QWidget):
         self.railSpinBox.setMaximum(4)
         self.railSpinBox.setValue(3)
 
+        self.styleLabel = QtWidgets.QLabel("Fence Style")
+        self.styleComboBox = QtWidgets.QComboBox()
+
+        self.styleComboBox.addItem("Standard")
+        self.styleComboBox.addItem("Decorative")
+        self.styleComboBox.addItem("Heavy Duty")
+
         self.postHeightLabel = QtWidgets.QLabel("Post Height (4-15)")
         self.postHeightSpinBox = QtWidgets.QSpinBox()
         self.postHeightSpinBox.setMinimum(4)
@@ -79,6 +95,9 @@ class FenceGUI(QtWidgets.QWidget):
         layout.addWidget(self.railLabel)
         layout.addWidget(self.railSpinBox)
 
+        layout.addWidget(self.styleLabel)
+        layout.addWidget(self.styleComboBox)
+
         layout.addWidget(self.postHeightLabel)
         layout.addWidget(self.postHeightSpinBox)
 
@@ -95,10 +114,12 @@ class FenceGUI(QtWidgets.QWidget):
     def generateFence(self):
         numPosts = self.postSpinBox.value()
         railCount = self.railSpinBox.value()
+        fenceStyle = self.styleComboBox.currentText()
         postHeight = self.postHeightSpinBox.value()
         postWidth = self.postWidthSpinBox.value()
         postSpacing = self.postSpacingSpinBox.value()
-        createFence(numPosts, railCount, postHeight, postWidth, postSpacing)
+        createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
+                    fenceStyle)
 
 
 win = FenceGUI()
