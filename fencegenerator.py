@@ -6,15 +6,21 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
 
     railHeight = 0.5
     railDepth = 0.5
-    railSpacing = postHeight * 0.25
-    railStartHeight = postHeight * 0.2
-    railSpacing = (postHeight * 0.6) / max(railCount - 1, 1)
+
     railLength = (numPosts - 1) * postSpacing
+
+    railStartHeight = postHeight * 0.2
+    topRailHeight = postHeight * 0.7
+
+    if railCount > 1:
+        railSpacing = (topRailHeight - railStartHeight) / (railCount - 1)
+    else:
+        railSpacing = 0
 
     for i in range(numPosts):
         cmds.polyCube(w=postWidth, h=postHeight, d=postWidth, name="FencePost"
                       + str(i))
-        cmds.move(i * postSpacing, 3, 0)
+        cmds.move(i * postSpacing, postHeight / 2, 0)
     for i in range(railCount):
         cmds.polyCube(w=railLength, h=railHeight, d=railDepth, name="Rail" +
                       str(i))
