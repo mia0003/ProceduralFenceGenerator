@@ -137,7 +137,3 @@ class FenceGUI(QtWidgets.QWidget):
         postSpacing = self.postSpacingSpinBox.value()
         createFence(numPosts, railCount, postHeight, postWidth, postSpacing,
                     fenceStyle)
-
-
-win = FenceGUI()
-win.show()
