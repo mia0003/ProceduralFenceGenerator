@@ -2,9 +2,8 @@ import maya.cmds as cmds
 from PySide6 import QtWidgets
 
 
-def createFence():
+def createFence(numPosts):
 
-    numPosts = 5
     postWidth = 1.5
     postHeight = 7
     postSpacing = 8
@@ -31,10 +30,19 @@ class FenceGUI(QtWidgets.QWidget):
         super(FenceGUI, self).__init__()
         self.setWindowTitle("Fence Generator")
         layout = QtWidgets.QVBoxLayout()
+        self.postlabel = QtWidgets.QLabel("Number of Posts")
+        self.postSpinBox = QtWidgets.QSpinBox()
+        self.postSpinBox.setValue(5)
         self.generatebutton = QtWidgets.QPushButton("Generate Fence")
+        layout.addWidget(self.postlabel)
+        layout.addWidget(self.postSpinBox)
         layout.addWidget(self.generatebutton)
         self.setLayout(layout)
-        self.generatebutton.clicked.connect(createFence)
+        self.generatebutton.clicked.connect(self.generateFence)
+
+    def generateFence(self):
+        numPosts = self.postSpinBox.value()
+        createFence(numPosts)
 
 
 win = FenceGUI()
