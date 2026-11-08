@@ -6,8 +6,9 @@ def createFence(numPosts, railCount, postHeight, postWidth, postSpacing):
 
     railHeight = 0.5
     railDepth = 0.5
-    railSpacing = 1.5
-    railStartHeight = 2
+    railSpacing = postHeight * 0.25
+    railStartHeight = postHeight * 0.2
+    railSpacing = (postHeight * 0.6) / max(railCount - 1, 1)
     railLength = (numPosts - 1) * postSpacing
 
     for i in range(numPosts):
@@ -26,24 +27,34 @@ class FenceGUI(QtWidgets.QWidget):
         self.setWindowTitle("Fence Generator")
         layout = QtWidgets.QVBoxLayout()
 
-        self.postlabel = QtWidgets.QLabel("Number of Posts")
+        self.postlabel = QtWidgets.QLabel("Number of Posts (2-20)")
         self.postSpinBox = QtWidgets.QSpinBox()
+        self.postSpinBox.setMinimum(2)
+        self.postSpinBox.setMaximum(20)
         self.postSpinBox.setValue(5)
 
-        self.railLabel = QtWidgets.QLabel("Number of  Rails")
+        self.railLabel = QtWidgets.QLabel("Number of  Rails (1-4)")
         self.railSpinBox = QtWidgets.QSpinBox()
+        self.railSpinBox.setMinimum(1)
+        self.railSpinBox.setMaximum(4)
         self.railSpinBox.setValue(3)
 
-        self.postHeightLabel = QtWidgets.QLabel("Post Height")
+        self.postHeightLabel = QtWidgets.QLabel("Post Height (4-15)")
         self.postHeightSpinBox = QtWidgets.QSpinBox()
+        self.postHeightSpinBox.setMinimum(4)
+        self.postHeightSpinBox.setMaximum(15)
         self.postHeightSpinBox.setValue(7)
 
-        self.postWidthLabel = QtWidgets.QLabel("Post Width")
-        self.postWidthSpinBox = QtWidgets.QSpinBox()
+        self.postWidthLabel = QtWidgets.QLabel("Post Width (0.5-5)")
+        self.postWidthSpinBox = QtWidgets.QDoubleSpinBox()
+        self.postWidthSpinBox.setMinimum(0.5)
+        self.postWidthSpinBox.setMaximum(5.0)
         self.postWidthSpinBox.setValue(1.5)
 
-        self.postSpacingLabel = QtWidgets.QLabel("Post Spacing")
+        self.postSpacingLabel = QtWidgets.QLabel("Post Spacing (4-20)")
         self.postSpacingSpinBox = QtWidgets.QSpinBox()
+        self.postSpacingSpinBox.setMinimum(4)
+        self.postSpacingSpinBox.setMaximum(20)
         self.postSpacingSpinBox.setValue(8)
 
         self.generatebutton = QtWidgets.QPushButton("Generate Fence")
